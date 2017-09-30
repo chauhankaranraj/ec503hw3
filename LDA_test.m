@@ -37,16 +37,16 @@ best_score = realmin;
 for data_pt = 1:num_data_pts
     
     % find class that maximizes aposteriori probability
-    for possible_class = 1:numofClass
+    for test_class = 1:numofClass
         
         % calculate projection onto the class vector and offset
-        projection = LDAModel.Mu(possible_class,:)*cov_inv*X_test(data_pt,:)';
-        offset = ln(LDAModel.Pi(possible_class)) - 0.5*LDAModel.Mu(possible_class,:)*cov_inv*LDAModel.Mu(possible_class,:)';
+        projection = LDAModel.Mu(test_class,:)*cov_inv*X_test(data_pt,:)';
+        offset = ln(LDAModel.Pi(test_class)) - 0.5*LDAModel.Mu(test_class,:)*cov_inv*LDAModel.Mu(test_class,:)';
         
         % check if it is better than the running best score
         if (projection + offset) > best_score
             best_score = (projection + offset);
-            Y_predict(data_pt) = possible_class;
+            Y_predict(data_pt) = test_class;
         end
         
     end

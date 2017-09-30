@@ -19,6 +19,39 @@ function [Y_predict] = QDA_test(X_test, QDAmodel, numofClass)
 % Output :
 % Y_predict predicted labels for all the testing data points in X_test
 
-% Write your code here:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% INITIALIZE VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% get the number of data points in test set, and dimensions of data
+[num_data_pts, D] = size(X_test);
+
+% initialize best score to infinity
+best_score = realmax;
+
+% initialize predictions vector to 0s
+Y_predict = zeros(num_data_pts, 1);
+
+for data_pt_idx = 1:num_data_pts
+    
+    for test_class = 1:numofClass
+        
+        % save x-u as temp variable instead of calculating twice
+        temp = (X_test(test_class,:)'- QDAmodel.Mu(test_class,:)');
+        
+        % class depenedent quadratic
+        class_quad = 0.5 * (temp * inv(QDAmodel.Sigma(:,:,test_class)) * temp');
+        
+        % scalar offset
+        class_offset = 0.5*ln(det(QDAmodel.Sigma(:,:,test_class))) - ln(QDAmodel.Pi(test_class));
+        
+        % check if this is the closest match
+        if (class_quad + class_offset) < best_score
+            best_score = class_quad + class_offset;
+            Y_predict(data_pt_idx) = test_class;
+        end
+        
+    end
+    
+end
 
 end
