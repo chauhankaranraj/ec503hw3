@@ -19,15 +19,20 @@ function [Y_predict] = LDA_test(X_test, LDAmodel, numofClass)
 % Y_predict predicted labels for all the testing data points in X_test
 
 
-% calculate inverse just once, for multiple usages later on
-cov_inv = inv(LDAmodel.Sigmapooled);
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Initialize variables %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [num_data_pts, num_features] = size(X_test);
 
+% calculate inverse just once, for multiple usages later on
+cov_inv = inv(LDAmodel.Sigmapooled);
 
-% todo: set best_score to -infinity, check out inverting mechanism, check
-% out predict matrix size variation thing
+% initialize return vector
+Y_predict = zeros(num_data_pts,1);
 
+% initial "best" score
+best_score = realmin;
+
+% todo: check out inverting mechanism
 
 for data_pt = 1:num_data_pts
     
@@ -45,6 +50,7 @@ for data_pt = 1:num_data_pts
         end
         
     end
+    
 end
 
 end

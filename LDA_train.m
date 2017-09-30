@@ -64,25 +64,19 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%% Calculate covariance matrix %%%%%%%%%%%%%%%%%%%%%%%
 
-% intialize to zeros
-cov_matrix = zeros(num_features);
-
 for data_pt_num = 1:num_data_pts
     
     % get label for this data point
     data_pt_class = Y_train(data_pt_num);
     
     % calculate (xi-ui)(xi-ui)' and add the result to covariance matrix
-    cov_matrix = cov_matrix + (X_train(data_pt_num,:)' - class_means(data_pt_class)) * (X_train(data_pt_num,:)' - class_means(data_pt_class)';
+    LDAmodel.Sigmapooled = LDAmodel.Sigmapooled + (X_train(data_pt_num,:)' - class_means(data_pt_class)) * (X_train(data_pt_num,:)' - class_means(data_pt_class)';
 
 end
 
-cov_matrix = cov_matrix/num_data_pts;
+LDAmodel.Sigmapooled = LDAmodel.Sigmapooled/num_data_pts;
 
-
-%%%%%%%%%%%%%%% Reassign according to desired output format %%%%%%%%%%%%%%%
-
+% reassign according to desired output format
 LDAmodel.Mu = class_means';
-LDAmodel.Sigmapooled = cov_matrix;
 
 end
