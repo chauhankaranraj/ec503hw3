@@ -36,13 +36,29 @@
 % disp(class_means);
 
 
-train = rand(5,2);
-labels = [1 2 1 1 2]';
-disp(train);
+% labels = [1 2 1 1 2]';
 
-test = (train(labels(:)==1,:));
-disp(test);
+% test = (train(labels(:)==1,:));
+% disp(test);
+% 
+% mean_vec = mean(test, 1);
+% disp(mean_vec);
 
-mean_vec = mean(test, 1);
-disp(mean_vec);
+% data = rand(10,4);
+% disp(data);
 
+% train_indices = randi([1 5], 1, 3);
+% disp(train_indices);
+
+% X_train = data(train_indices,:);
+% X_train = datasample(data, 7, 'Replace', false);
+% disp(X_train);
+
+
+% function ret = scratchpad(num)
+% ret = num + 1;
+% end
+
+A = [0 1 1; 2 3 2];
+B = mean(A, 1);
+disp(B);

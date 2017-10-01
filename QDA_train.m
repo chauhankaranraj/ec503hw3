@@ -30,7 +30,7 @@ QDAmodel.Sigma = zeros(D, D, numofClass);
 QDAmodel.Pi = zeros(numofClass, 1);
 
 
-%%%%%%%%%%%%%%%%% CALCULATE CLASS MEAN, PRIOR PROB VECTORS %%%%%%%%%%%%%%%%
+%%%%%%%%%%% CALCULATE CLASS MEAN, COVARIANCE, PRIOR PROB VECTORS %%%%%%%%%%
 
 for this_class = 1:numofClass
     
@@ -63,7 +63,7 @@ for this_class = 1:numofClass
     
     % calculate class covariance matrix
     class_cov_mat = zeros(D, D);
-
+    
     for data_pt_idx = 1:size(this_class_data_pts, 1)
         temp = (this_class_data_pts(data_pt_idx,:)' - QDAmodel.Mu(this_class,:)');
         class_cov_mat = class_cov_mat + (temp*temp');

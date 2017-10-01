@@ -20,63 +20,46 @@ function [LDAmodel] = LDA_train(X_train, Y_train, numofClass)
 %
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%% Initialize variables %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% INITIALIZE VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % determine how many training points and how many features for each point
-[num_data_pts, num_features] = size(X_train);
-
-% transpose it once, use it many times
-X_train_transpose = X_train';
+[num_data_pts, D] = size(X_train);
 
 % initialize return model parameters
-LDAmodel.Mu = zeros(numofClass, num_featues);
-LDAmodel.Sigmapooled = zeros(num_features);
+LDAmodel.Mu = zeros(numofClass, D);
+LDAmodel.Sigmapooled = zeros(D);
 LDAmodel.Pi = zeros(numofClass,1);
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%% Calculate class means %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% CALCULATE CLASS MEAN VECTORS %%%%%%%%%%%%%%%%%%%%%%
 
-% num_features x numOfClass matrix, i-th column is mean vector of i-th class
-class_means = zeros(num_features, numofClass);
-
-for this_class = 1:numofClass
+for this_class = 1:numofClass  
     
-    % num_data_points x 1 boolean vector, with 1 where class label is same as this_class
-    is_pt_this_class = (Y_train == this_class);
-    num_this_class_pts = sum(is_pt_this_class);
+    % get ONLY data points that are labelled this_class
+    this_class_data_pts = X_train((Y_train == this_class), :);
     
     % prior probability is given by num_class_pts/total_pts
-    LDAmodel.Pi(this_class) = num_this_class_pts/num_data_pts;
+    LDAmodel.Pi(this_class) = size(this_class_data_pts) / num_data_pts;
     
-    if num_this_class_pts    
-        % num_features x 1 vector, where i-th row is sum of feature #i of all data points
-        this_class_feat_sum = (X_train_transpose) * is_pt_this_class;
-        
-        % divide feature sum by number of data_points
-        class_means(:,this_class) = this_class_feat_sum/num_this_class_pts;
-    else
-        % no data points for this class, sum will be 0
-        class_means(:,this_class) = zeros(num_features,1);
-    end
+    % row-wise mean (mean of each dimension) of all data points of this_class
+    LDAmodel.Mu(this_class, :) = mean(this_class_data_pts, 1);
     
 end
 
 
-%%%%%%%%%%%%%%%%%%%%%%% Calculate covariance matrix %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% CALCULATE COVARIANCE MATRIX %%%%%%%%%%%%%%%%%%%%%%%
 
-for data_pt_num = 1:num_data_pts
+for data_pt_idx = 1:num_data_pts
     
-    % get label for this data point
-    data_pt_class = Y_train(data_pt_num);
+    % calculate (xi-uj)
+    temp = X_train(data_pt_idx, :)' - LDAmodel.Mu(Y_train(data_pt_idx), :)';
     
-    % calculate (xi-ui)(xi-ui)' and add the result to covariance matrix
-    LDAmodel.Sigmapooled = LDAmodel.Sigmapooled + (X_train(data_pt_num,:)' - class_means(data_pt_class)) * (X_train(data_pt_num,:)' - class_means(data_pt_class)';
-
+    % add (xi-uj)(xi-uj)' to covariance matrix
+    LDAmodel.Sigmapooled = LDAmodel.Sigmapooled + (temp * temp');
+    
 end
 
+% divide sum by n, the total number of data pts
 LDAmodel.Sigmapooled = LDAmodel.Sigmapooled/num_data_pts;
-
-% reassign according to desired output format
-LDAmodel.Mu = class_means';
 
 end

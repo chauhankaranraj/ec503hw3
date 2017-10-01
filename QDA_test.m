@@ -23,13 +23,16 @@ function [Y_predict] = QDA_test(X_test, QDAmodel, numofClass)
 %%%%%%%%%%%%%%%%%%%%%%%%%%% INITIALIZE VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % get the number of data points in test set, and dimensions of data
-[num_data_pts, D] = size(X_test);
+num_data_pts = size(X_test, 1);
 
 % initialize best score to infinity
 best_score = realmax;
 
 % initialize predictions vector to 0s
 Y_predict = zeros(num_data_pts, 1);
+
+
+%%%%%%%%%%%%%%%%%%%%% CHECK EACH CLASS FOR EACH DATA PT %%%%%%%%%%%%%%%%%%%
 
 for data_pt_idx = 1:num_data_pts
     
