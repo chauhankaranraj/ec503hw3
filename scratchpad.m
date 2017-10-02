@@ -63,9 +63,18 @@
 % B = mean(A, 1);
 % disp(B);
 
-foo = rand(5,5);
+foo = [1 2 3 4 5 4 10 12 -10 -2]';
 disp(foo);
-disp(diag(diag(foo)));
+
+[val, idx] = min(foo( foo>min(foo)));
+[val0, idx0] = min(foo);
+
+if idx0 <= idx
+    idx = idx + 1;
+end
+
+disp(val);
+disp(idx);
 
 
 
