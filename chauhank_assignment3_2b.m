@@ -16,7 +16,7 @@ test_ratio = 1/3;
 val_ratio = 0;
 
 % select indices uniformly at random for train and test sets
-[train_idx, val_idx, test_idx] = dividerand(num_data_pts, train_ratio, 0, test_ratio);
+[train_idx, val_idx, test_idx] = dividerand(num_data_pts, train_ratio, val_ratio, test_ratio);
 
 % get the data at train and test indices
 X_train = X(train_idx, :);
