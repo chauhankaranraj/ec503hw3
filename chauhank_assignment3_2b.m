@@ -1,6 +1,4 @@
-% here for testing purposes
-% X = rand(15,4);
-% Y = [2 2 2 2 1 2 1 1 1 2 2 2 1 1 1]';
+load data_iris;
 
 % number of classes in the data set
 num_classes = size(unique(Y), 1);

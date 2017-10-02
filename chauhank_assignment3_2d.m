@@ -1,3 +1,5 @@
+load data_cancer;
+
 % number of classes in dataset
 num_classes = size(unique(Y), 1);
 
