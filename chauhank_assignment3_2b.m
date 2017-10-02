@@ -5,6 +5,7 @@
 % number of classes in the data set
 num_classes = size(unique(Y), 1);
 
+for split_num = 1:10
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% TRAIN-TEST SPLIT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -51,9 +52,16 @@ my_qda_preds = QDA_test(X_test, my_qda_model, num_classes);
 qda_score = (my_qda_preds==Y_test);
 disp(sum(qda_score,1) / size(qda_score,1));
 
+% cp = classperf(Y_test, my_qda_preds);
+% disp(cp.CorrectRate);
+% classperf(cp, my_qda_preds);
+% disp(cp.CorrectRate);
+
+sep = zeros(18,1);
+disp(sep');
 
 
 
-
+end
 
 

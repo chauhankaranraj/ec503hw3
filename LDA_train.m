@@ -27,11 +27,11 @@ function [LDAmodel] = LDA_train(X_train, Y_train, numofClass)
 
 % initialize return model parameters
 LDAmodel.Mu = zeros(numofClass, D);
-LDAmodel.Sigmapooled = zeros(D);
-LDAmodel.Pi = zeros(numofClass,1);
+LDAmodel.Sigmapooled = zeros(D, D);
+LDAmodel.Pi = zeros(numofClass, 1);
 
 
-%%%%%%%%%%%%%%%%%%%%%%% CALCULATE CLASS MEAN VECTORS %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% CALCULATE CLASS MEAN, PI VECTORS %%%%%%%%%%%%%%%%%%%%
 
 for this_class = 1:numofClass  
     

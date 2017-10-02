@@ -39,13 +39,19 @@ for data_pt_idx = 1:num_data_pts
     for test_class = 1:numofClass
         
         % save x-u as temp variable instead of calculating twice
-        temp = (X_test(test_class,:)'- QDAmodel.Mu(test_class,:)');
+        temp = (X_test(data_pt_idx,:)'- QDAmodel.Mu(test_class,:)');
+        
+        
+        % TODO: clean up after debugging
+%         fprintf('size of inv cov mat is %i\n', size(inv(QDAmodel.Sigma(:,:,test_class))));
+%         disp(inv(QDAmodel.Sigma(:,:,test_class)));
+%         disp(temp);
         
         % class depenedent quadratic
-        class_quad = 0.5 * (temp * inv(QDAmodel.Sigma(:,:,test_class)) * temp');
+        class_quad = 0.5 * (temp' * inv(QDAmodel.Sigma(:,:,test_class)) * temp);
         
         % scalar offset
-        class_offset = 0.5*log(det(QDAmodel.Sigma(:,:,test_class))) - log(QDAmodel.Pi(test_class));
+        class_offset = 0.5*log(det(QDAmodel.Sigma(:,:,test_class))) - log(QDAmodel.Pi(test_class, 1));
         
         % check if this is the closest match
         if (class_quad + class_offset) < best_score

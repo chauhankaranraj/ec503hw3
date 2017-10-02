@@ -1,4 +1,4 @@
-function [RDAmodel]= RDA_train(X_train, Y_train,gamma, numofClass)
+function [RDAmodel]= RDA_train(X_train, Y_train, gamma, numofClass)
 %
 % Training RDA
 %
@@ -18,6 +18,31 @@ function [RDAmodel]= RDA_train(X_train, Y_train,gamma, numofClass)
 % RDAmodel.Sigmapooled : D * D  covariance matrix
 % RDAmodel.Pi : numofClass * 1 vector, Pi(i) = prior probability of class i
 
-% Write your code here:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% INITIALIZE VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+[num_data_pts, D] = size(X_train);
+
+RDAmodel.Mu = zeros(numofClass, D);
+RDAmodel.Sigmapooled = zeros(D, D);
+RDAmodel.Pi = zeros(numofClass, 1);
+
+
+%%%%%%%%%%%%%%%%%%%%% CALCULATE CLASS MEAN, PI VECTORS %%%%%%%%%%%%%%%%%%%%
+
+for this_class = 1:numofClass  
+    
+    % get ONLY data points that are labelled this_class
+    this_class_data_pts = X_train((Y_train == this_class), :);
+    
+    % prior probability is given by num_class_pts/total_pts
+    LDAmodel.Pi(this_class, 1) = size(this_class_data_pts, 1) / num_data_pts;
+    
+    % row-wise mean (mean of each dimension) of all data points of this_class
+    LDAmodel.Mu(this_class, :) = mean(this_class_data_pts, 1);
+    
+end
+
+
 
 end
