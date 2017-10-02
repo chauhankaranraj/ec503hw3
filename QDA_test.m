@@ -25,16 +25,16 @@ function [Y_predict] = QDA_test(X_test, QDAmodel, numofClass)
 % get the number of data points in test set, and dimensions of data
 num_data_pts = size(X_test, 1);
 
-% initialize best score to infinity
-best_score = realmax;
-
 % initialize predictions vector to 0s
 Y_predict = zeros(num_data_pts, 1);
 
 
-%%%%%%%%%%%%%%%%%%%%% CHECK EACH CLASS FOR EACH DATA PT %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% CHECK EACH DATA PT FOR EACH CLASS %%%%%%%%%%%%%%%%%%%
 
 for data_pt_idx = 1:num_data_pts
+    
+    % initialize best score to infinity
+    best_score = realmax;
     
     for test_class = 1:numofClass
         
@@ -45,12 +45,12 @@ for data_pt_idx = 1:num_data_pts
         class_quad = 0.5 * (temp * inv(QDAmodel.Sigma(:,:,test_class)) * temp');
         
         % scalar offset
-        class_offset = 0.5*ln(det(QDAmodel.Sigma(:,:,test_class))) - ln(QDAmodel.Pi(test_class));
+        class_offset = 0.5*log(det(QDAmodel.Sigma(:,:,test_class))) - log(QDAmodel.Pi(test_class));
         
         % check if this is the closest match
         if (class_quad + class_offset) < best_score
             best_score = class_quad + class_offset;
-            Y_predict(data_pt_idx) = test_class;
+            Y_predict(data_pt_idx, 1) = test_class;
         end
         
     end

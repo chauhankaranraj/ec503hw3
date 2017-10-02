@@ -33,24 +33,6 @@ QDAmodel.Pi = zeros(numofClass, 1);
 %%%%%%%%%%% CALCULATE CLASS MEAN, COVARIANCE, PRIOR PROB VECTORS %%%%%%%%%%
 
 for this_class = 1:numofClass
-    
-%     % boolean vector, 1 if data pt belongs to this class and 0 otherwise
-%     is_data_pt_this_class = (Y_train == this_class);
-%     num_this_class_data_pts = sum(is_data_pt_this_class);
-%     
-%     % update prior prob vector with prio prob estimate of this class
-%     QDAmodel.Pi(this_class) = num_this_class_data_pts/num_data_pts;
-%     
-%     if num_this_class_data_pts
-%         % get sum of each dimension, ONLY for data pts from this class
-%         % then divide by total num of data pts from this class
-%         % then transpose it to get class mean vector as a row
-%         QDAmodel.Mu(this_class,:) = ((X_train_transpose * is_data_pt_this_class)/num_this_class_data_pts)';
-%     
-%     
-%         % todo: matrix multiply instead of for loop?
-%     
-%     end
 
     % get ONLY the data points that are labelled this_class
     this_class_data_pts = X_train((Y_train == this_class), :);
@@ -59,7 +41,7 @@ for this_class = 1:numofClass
     QDAmodel.Mu(this_class,:) = mean(this_class_data_pts, 1);
     
     % set prior prob vector in qda model with prio prob estimate of this class
-    QDAmodel.Pi(this_class) = size(this_class_data_pts, 1) / num_data_pts;
+    QDAmodel.Pi(this_class, 1) = size(this_class_data_pts, 1) / num_data_pts;
     
     % calculate class covariance matrix
     class_cov_mat = zeros(D, D);

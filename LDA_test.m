@@ -19,9 +19,9 @@ function [Y_predict] = LDA_test(X_test, LDAmodel, numofClass)
 % Y_predict predicted labels for all the testing data points in X_test
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%% Initialize variables %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% INITIALIZE VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[num_data_pts, num_features] = size(X_test);
+num_data_pts = size(X_test, 1);
 
 % calculate inverse just once, for multiple usages later on
 cov_inv = inv(LDAmodel.Sigmapooled);
@@ -29,26 +29,29 @@ cov_inv = inv(LDAmodel.Sigmapooled);
 % initialize return vector
 Y_predict = zeros(num_data_pts,1);
 
-% initial "best" score
-best_score = realmin;
-
 % todo: check out inverting mechanism
 
-for data_pt = 1:num_data_pts
+
+%%%%%%%%%%%%%%%%%%%%% CHECK EACH DATA PT FOR EACH CLASS %%%%%%%%%%%%%%%%%%%
+
+for data_pt_idx = 1:num_data_pts
+    
+    % initial best score
+    best_score = realmin;
     
     % find class that maximizes aposteriori probability
     for test_class = 1:numofClass
         
         % calculate projection onto the class vector and offset
-        projection = LDAModel.Mu(test_class,:)*cov_inv*X_test(data_pt,:)';
-        offset = ln(LDAModel.Pi(test_class)) - 0.5*LDAModel.Mu(test_class,:)*cov_inv*LDAModel.Mu(test_class,:)';
+        projection = LDAmodel.Mu(test_class,:)*cov_inv*X_test(data_pt_idx,:)';
+        offset = log(LDAmodel.Pi(test_class)) - 0.5*LDAmodel.Mu(test_class,:)*cov_inv*LDAmodel.Mu(test_class,:)';
         
         % check if it is better than the running best score
         if (projection + offset) > best_score
             best_score = (projection + offset);
-            Y_predict(data_pt) = test_class;
+            Y_predict(data_pt_idx, 1) = test_class;
         end
-        
+                
     end
     
 end

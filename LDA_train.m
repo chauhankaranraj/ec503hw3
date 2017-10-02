@@ -39,7 +39,7 @@ for this_class = 1:numofClass
     this_class_data_pts = X_train((Y_train == this_class), :);
     
     % prior probability is given by num_class_pts/total_pts
-    LDAmodel.Pi(this_class) = size(this_class_data_pts) / num_data_pts;
+    LDAmodel.Pi(this_class, 1) = size(this_class_data_pts, 1) / num_data_pts;
     
     % row-wise mean (mean of each dimension) of all data points of this_class
     LDAmodel.Mu(this_class, :) = mean(this_class_data_pts, 1);

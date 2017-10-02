@@ -1,8 +1,9 @@
 % here for testing purposes
-X = rand(15,4);
-Y = [2 2 2 2 1 2 1 1 1 2 2 2 1 1 1];
-num_classes = 2;
-% disp(X);
+% X = rand(15,4);
+% Y = [2 2 2 2 1 2 1 1 1 2 2 2 1 1 1]';
+
+% number of classes in the data set
+num_classes = size(unique(Y), 1);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% TRAIN-TEST SPLIT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,14 +31,25 @@ Y_test = Y(test_idx);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% TRAIN CLASSIFIER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% train the lda model on data
 [my_lda_model] = LDA_train(X_train, Y_train, num_classes);
 
+% get predictions by the trained lda model
+my_lda_preds = LDA_test(X_test, my_lda_model, num_classes);
 
+% precision
+lda_score = (my_lda_preds==Y_test);
+disp(sum(lda_score,1) / size(lda_score,1));
 
+% train the qda model on data
+[my_qda_model] = QDA_train(X_train, Y_train, num_classes);
 
+% get predictions by the trained qda model
+my_qda_preds = QDA_test(X_test, my_qda_model, num_classes);
 
-
-
+% precision
+qda_score = (my_qda_preds==Y_test);
+disp(sum(qda_score,1) / size(qda_score,1));
 
 
 
