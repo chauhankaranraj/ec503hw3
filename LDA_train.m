@@ -52,7 +52,7 @@ end
 for data_pt_idx = 1:num_data_pts
     
     % calculate (xi-uj)
-    temp = X_train(data_pt_idx, :)' - LDAmodel.Mu(Y_train(data_pt_idx), :)';
+    temp = X_train(data_pt_idx, :)' - LDAmodel.Mu(Y_train(data_pt_idx, 1), :)';
     
     % add (xi-uj)(xi-uj)' to covariance matrix
     LDAmodel.Sigmapooled = LDAmodel.Sigmapooled + (temp * temp');

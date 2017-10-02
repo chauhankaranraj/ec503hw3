@@ -59,6 +59,13 @@
 % ret = num + 1;
 % end
 
-A = [0 1 1; 2 3 2];
-B = mean(A, 1);
-disp(B);
+% A = [0 1 1; 2 3 2];
+% B = mean(A, 1);
+% disp(B);
+
+foo = rand(5,5);
+disp(foo);
+disp(diag(diag(foo)));
+
+
+

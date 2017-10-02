@@ -27,7 +27,7 @@ num_data_pts = size(X_test, 1);
 cov_inv = inv(LDAmodel.Sigmapooled);
 
 % initialize return vector
-Y_predict = zeros(num_data_pts,1);
+Y_predict = zeros(num_data_pts, 1);
 
 % todo: check out inverting mechanism
 
